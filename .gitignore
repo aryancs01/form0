@@ -36,3 +36,9 @@ yarn-error.log*
 # Misc
 .DS_Store
 *.pem
+
+/packages/database/generated/client
+**/generated/
+/packages/database/generated/
+
+
