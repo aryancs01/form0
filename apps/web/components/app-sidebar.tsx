@@ -1,4 +1,4 @@
-import { Calendar, ChevronDown, Home, Inbox, Search, Settings } from "lucide-react"
+import { Calendar, Home, Inbox, Search, Settings } from "lucide-react"
 
 import {
   Sidebar,
@@ -11,10 +11,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu"
-import { auth } from "@/lib/auth"
-import { headers } from "next/headers"
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
+import { getSession } from "@/hooks/useSession"
+import { UserMenu } from "./UserMenu";
 
 // Menu items.
 const items = [
@@ -46,35 +44,14 @@ const items = [
 ]
 
 export async function AppSidebar() {
-  const session = await auth.api.getSession({
-    headers:await headers()
-  });
+  const session = await getSession();
 
   return (
     <Sidebar>
         <SidebarHeader>
             <SidebarMenu>
                 <SidebarMenuItem>
-                    <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <SidebarMenuButton>
-                            <Avatar>
-                                <AvatarImage src={session?.user?.image as string} />
-                                <AvatarFallback>CN</AvatarFallback>
-                            </Avatar>
-                            {session?.user?.name}
-                            <ChevronDown className="ml-auto" />
-                        </SidebarMenuButton>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-[--radix-popper-anchor-width]">
-                        <DropdownMenuItem>
-                        <span>Acme Inc</span>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                        <span>Acme Corp.</span>
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                    </DropdownMenu>
+                  <UserMenu name={session?.user.name} image={session.user?.image as string}/>
                 </SidebarMenuItem>
             </SidebarMenu>
         </SidebarHeader>
